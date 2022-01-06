@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -22,6 +23,8 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
+    "eslint": "8.6.0",
+    "eslint-config-next": "12.0.7",
     "postcss": "latest",
     "tailwindcss": "latest",
     "typescript": "latest"
