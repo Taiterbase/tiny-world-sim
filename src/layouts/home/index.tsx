@@ -2,8 +2,9 @@ import { SWRConfig } from "swr";
 import BackgroundSplash from "./components/background-splash";
 import HomeHeader from "./components/home-header";
 import { getLayout as getRootLayout } from "layouts/root";
+import React from "react";
 
-export function HomeLayout(props) {
+export function HomeLayout(props: { children: React.ReactNode; }) {
     const { children } = props;
     return (
         <SWRConfig
@@ -27,6 +28,6 @@ export function HomeLayout(props) {
     )
 }
 
-export default function getLayout(page) {
+export default function getLayout(page: React.ReactNode) {
     return getRootLayout(<HomeLayout>{page}</HomeLayout>)
 }

@@ -1,7 +1,8 @@
 import Head from "next/head";
+import React from "react";
 import { SWRConfig } from "swr";
 
-export function RootLayout(props) {
+export function RootLayout(props: { children: React.ReactNode; }) {
     const { children } = props;
     return (
         <>
@@ -26,6 +27,6 @@ export function RootLayout(props) {
     )
 }
 
-export function getLayout(page) {
+export function getLayout(page: React.ReactNode) {
     return <RootLayout>{page}</RootLayout>
 }
