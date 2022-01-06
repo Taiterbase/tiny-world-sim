@@ -1,3 +1,10 @@
+/*
+    Background blurs
+
+    In order to avoid complications seen in webkit or safari 
+    where gradients don't get rendered properly, we should use
+    an image version of these <svg>'s as WebP or AVIF 
+*/
 export default () => {
     return (
         <div>
