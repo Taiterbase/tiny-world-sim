@@ -8,9 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "axios": "latest",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "jest": "^27.4.7",
     "next": "latest",
-    "pg": "^8.7.1",
     "react": "latest",
     "react-dom": "latest",
     "sharp": "latest",

@@ -1,4 +1,0 @@
-CREATE TABLE User (
-    id UUID PRIMARY KEY,
-    username STRING UNIQUE,
-);
