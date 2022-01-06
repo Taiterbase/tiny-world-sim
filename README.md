@@ -1,5 +1,5 @@
 # Bitso
-This is a [Tiny World](https://tinyworlds.io/) (<- totally irrelevant tangent) simulation where each cell in the 2d grid represents a location on our world map. This is similar to how battleship's playing field is laid out, in that the user can select a point on the grid and deem it to be an island or apart of the ocean.
+This is a Tiny World simulation where each cell in the 2d grid represents a location on our world map. This is similar to how battleship's playing field is laid out, in that the user can select a point on the grid and deem it to be an island or apart of the ocean.
 
 ### Cool. Where's the ignition?
 I use Yarn for package management and orchestration. You can get it [here](https://yarnpkg.com/getting-started/install).
@@ -15,3 +15,7 @@ I use Yarn for package management and orchestration. You can get it [here](https
 
 ### Blast-off!
 For this I used [Vercel](https://vercel.com/docs) to very quickly deploy my site.
+
+### Relevant links
+* [Sebastian Lague's Tiny World](https://youtu.be/sLqXFF8mlEU)
+* [Tiny World](https://tinyworlds.io/)
