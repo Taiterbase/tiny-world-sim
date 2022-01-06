@@ -1,8 +1,8 @@
 import { SWRConfig } from "swr";
 import { getLayout as getRootLayout } from "layouts/root";
-import React from "react";
+import React, { ReactNode } from "react";
 
-export function HomeLayout(props: { children: React.ReactNode; }) {
+export function HomeLayout(props: { children: ReactNode; }) {
     const { children } = props;
     return (
         <SWRConfig

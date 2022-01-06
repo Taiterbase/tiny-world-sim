@@ -1,15 +1,15 @@
 import Head from "next/head";
-import React from "react";
+import React, { ReactNode } from "react";
 import { SWRConfig } from "swr";
 
-export function RootLayout(props: { children: React.ReactNode; }) {
+export function RootLayout(props: { children: ReactNode; }) {
     const { children } = props;
     return (
         <>
         <Head>
-            <title>Zifi</title>
-            <meta name="og:title" content="Zifi" key="title" />
-            <meta name="description" content="Next.js Web Template free to use for learners and scholars" key="description" />
+            <title>Tiny World</title>
+            <meta name="og:title" content="Tiny World" key="title" />
+            <meta name="description" content="Bitso take home project exploring graph search algorithms" key="description" />
         </Head>
         <SWRConfig
             value={{
