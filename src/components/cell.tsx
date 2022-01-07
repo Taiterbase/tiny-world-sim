@@ -1,26 +1,22 @@
-import { MapPoint } from "models/map";
-import React, { memo, useEffect, useState } from "react";
+import { useMap } from "providers/map-provider";
 
 type CellProps = {
     x: number;
     y: number;
     island: boolean;
-    onClick: (point: MapPoint) => Promise<void>;
 };
-
 const Cell = (props: CellProps) => {
-    const { x, y, island = false, onClick } = props;
+    const world = useMap();
+    const { x, y, island = false } = props;
+
     const handleOnClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        onClick({x, y});
+        world.setCell({ x, y });
     }
-    
-    useEffect(() => {
-        console.log(`Cell ${x}, ${y} was rerendered`)
-    })
-    
-    let bgColor = island ? `bg-yellow-150` : `bg-blue-640`;
-    let hoverColor = island ? `bg-blue-640` : `bg-yellow-150`;
-    return (<div key={`${x} ${y}`} onClick={(e) => handleOnClick(e)} className={`flex flex-grow ${bgColor} hover:${hoverColor} hover:shadow-lg`} />);
+
+    let bgColor = ``;
+    if(island) bgColor = `bg-green-800`;
+    let hover = `hover:bg-green-800`;
+    return (<div className={`flex flex-grow ${bgColor} ${hover}`} key={`${x} ${y}`} onClick={handleOnClick} />);
 }
 
-export default memo(Cell, ((prevProps, nextProps) => prevProps.island === nextProps.island));
+export default Cell;
