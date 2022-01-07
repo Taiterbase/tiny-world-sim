@@ -11,8 +11,8 @@ export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = M
     const height_offset = height_diff % 2;
     const width_offset = width_diff % 2;
     // divide the height and width by 2
-    const boundaryY = height_diff >> 1;
-    const boundaryX = width_diff >> 1;
+    const boundaryY = height_diff / 2;
+    const boundaryX = width_diff / 2;
     // add the offset
     const north = boundaryY + height_offset;
     const west = boundaryX + width_offset;
@@ -28,12 +28,10 @@ export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = M
 }
 
 export const pointWithinBoundary = (point: MapPoint, boundary: MapBoundary): boolean => {
-    if (
-        point.y >= boundary.north ||
-        point.x >= boundary.east ||
-        point.y < boundary.south ||
-        point.x < boundary.west
-    )
-        return true;
-    return false;
+    return point.y >= boundary.north &&
+        point.y < boundary.south &&
+        point.x >= boundary.west &&
+        point.x < boundary.east;
+
 }
+
