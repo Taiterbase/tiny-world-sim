@@ -21,8 +21,10 @@ export type MapProviderValues = {
     getMap: () => Map;
     getBoundedMap: () => Map;
     getMapGridSize: () => MapSize;
-    setMapGridSize: (size: MapSize) => Promise<void>,
-    getMapBoundary: () => MapBoundary,
-    setCell: (cell: MapPoint) => Promise<void>,
-    getCell: (point: MapPoint) => boolean, 
+    setMapGridSize: (size: MapSize) => Promise<void>;
+    getMapBoundary: () => MapBoundary;
+    setCell: (cell: MapPoint) => Promise<void>;
+    getCell: (point: MapPoint) => boolean;
+    getNumberOfIslands: () => number;
+    getNumberOfLands: () => number;
 };
