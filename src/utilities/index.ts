@@ -12,8 +12,8 @@ export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = M
     const height_offset = height_diff % 2;
     const width_offset = width_diff % 2;
     // divide the height and width by 2
-    const boundaryY = Math.floor(height_diff / 2);
-    const boundaryX = Math.floor(width_diff / 2);
+    const boundaryY = height_diff >> 1;
+    const boundaryX = width_diff >> 1;
     // add the offset
     const north = boundaryY + height_offset;
     const west = boundaryX + width_offset;
@@ -62,6 +62,13 @@ export const generateBoundedMap = (boundary: MapBoundary, map: Map): Map => {
     return map
 }
 
+export const clearMap = (map: Map) => {
+    for(let i = 0; i < map.length; i++){
+        for(let ii = 0; ii < map[0].length; ii++){
+            map[i][ii] = false;
+        }
+    }
+}
 
 // isValidSize verifies if the parameter is within bounds
 export const isValidSize = (size: MapSize) => {
