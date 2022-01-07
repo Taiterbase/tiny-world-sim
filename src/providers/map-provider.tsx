@@ -1,6 +1,6 @@
 import { Map, MapBoundary, MapPoint, MapProviderValues, MapSize } from "models/map";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { calculateMapBoundary, generateBoundedMap, generateMap, getIslands, getLands, isValidSize, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities/map";
+import { calculateMapBoundary, generateBoundedMap, generateMap, getIslands, getLands, isValidSize, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities";
 
 
 export const MapContext = createContext<MapProviderValues>(null);
