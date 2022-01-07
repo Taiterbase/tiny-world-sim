@@ -8,37 +8,61 @@ export const MapContext = createContext<MapProviderValues>(null);
 // MapProvider offers an interface for the grid of cells on the map
 export function MapProvider(props: { children: ReactNode }) {
     const { children } = props;
-    const [mapSize, setMapSize] = useState<MapSize>({ height: 20, width: 20 })
-    const [mapBoundary, setMapBoundary] = useState<MapBoundary>(undefined)
-    const [map, setMap] = useState<Map>(undefined);
+    const [mapSize, setMapSize] = useState<MapSize>({ height: 20, width: 20 });
+    const [mapBoundary, setMapBoundary] = useState<MapBoundary>({ north: 40, south: 40, east: 40, west: 40 });
+    const [map, setMap] = useState<Map>(() => {
+        let arr: boolean[][] = [];
+        for (let i = 0; i < MAX_HEIGHT; i++) {
+            arr[i] = [];
+            for (let ii = 0; ii < MAX_WIDTH; ii++) {
+                arr[i][ii] = false;
+            }
+        }
+        return arr;
+    });
     const [islands, setIslands] = useState<number>(0);
 
     // useEffect[] initializes values and sets up listeners
     useEffect(() => {
         // Initialize the map with max values.
-        setMap(() => {
-            let arr: boolean[][] = [[]];
-            for (let i = 0; i < MAX_HEIGHT; ++i) {
-                for (let ii = 0; i < MAX_WIDTH; ++i) {
-                    arr[i] = [];
-                    arr[i][ii] = false;
-                }
-            }
-            return arr;
-
-        });
-
-        // Initialize map boundaries
-        setMapBoundary(calculateMapBoundary(mapSize));
+        (async () => await setMapGridSize({ height: 20, width: 20 }));
+        (async () => setMap(await initializeMap()));
     }, []);
 
     // useEffect[mapSize] resets map boundaries after a mapSize change
     useEffect(() => {
-        setMapBoundary(calculateMapBoundary(mapSize));
+        setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
     }, [mapSize]);
 
+    // initializeMap initializes the map!
+    const initializeMap = (): Promise<Map> => {
+        return new Promise((resolve, _reject) => {
+            let arr: boolean[][] = [];
+            for (let i = 0; i < MAX_HEIGHT; i++) {
+                arr[i] = [];
+                for (let ii = 0; ii < MAX_WIDTH; ii++) {
+                    arr[i][ii] = false;
+                }
+            }
+            return resolve(arr);
+        });
+    }
+
+    // getMap returns the raw boolean[][]
     const getMap = (): Map => {
         return map;
+    }
+
+    // getBoundedMap returns the bounded map area
+    const getBoundedMap = (): Map => {
+        let boundedMap: boolean[][] = [];
+        for (let i = mapBoundary.north; i < mapBoundary.south; i++) {
+            boundedMap[i] = [];
+            for (let ii = mapBoundary.west; ii < mapBoundary.east; ii++) {
+                boundedMap[i][ii] = map[i][ii];
+            }
+        }
+        return boundedMap;
     }
 
     // getMapSize gets the current map size
@@ -78,13 +102,10 @@ export function MapProvider(props: { children: ReactNode }) {
     const setCell = async (point: MapPoint): Promise<void> => {
         return new Promise((resolve, reject) => {
             if (pointWithinBoundary(point, mapBoundary)) {
-                setMap((map) => {
-                    let pointValue: boolean = map[point.y][point.x];
-                    // toggle the cell
-                    console.log(`Setting point ${point} to ${!pointValue}`);
-                    map[point.y][point.x] = !pointValue;
-                    return map;
-                })
+                let newMap = [...map];
+                let pointValue: boolean = map[point.y][point.x];
+                newMap[point.y][point.x] = !pointValue;
+                setMap(newMap);
                 resolve();
             } else {
                 reject(`Point ${point} is out-of-bounds.`);
@@ -117,8 +138,10 @@ export function MapProvider(props: { children: ReactNode }) {
         }
     }
 
+    // list of values associated with the provider. like an interface..
     const values: MapProviderValues = {
         getMap,
+        getBoundedMap,
         getMapGridSize,
         setMapGridSize,
         getMapBoundary,
@@ -131,6 +154,7 @@ export function MapProvider(props: { children: ReactNode }) {
     );
 }
 
+// useMap is the context hook
 export const useMap = () => {
     const context = useContext(MapContext);
     if (context === undefined) {

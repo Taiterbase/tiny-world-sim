@@ -19,6 +19,7 @@ export type MapBoundary = {
 
 export type MapProviderValues = {
     getMap: () => Map;
+    getBoundedMap: () => Map;
     getMapGridSize: () => MapSize;
     setMapGridSize: (size: MapSize) => Promise<void>,
     getMapBoundary: () => MapBoundary,

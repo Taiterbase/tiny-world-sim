@@ -3,15 +3,22 @@ import { MapBoundary, MapPoint, MapSize } from "models/map";
 export const MAX_HEIGHT = 100;
 export const MAX_WIDTH = 100;
 
-export const calculateMapBoundary = (size: MapSize): MapBoundary => {
-    const height_diff = MAX_HEIGHT - size.height;
+export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = MAX_WIDTH, size: MapSize): MapBoundary => {
+    // calculate virtual boundaries
+    const height_diff = mapY - size.height;
+    const width_diff = mapX - size.width;
+    // grab the offset incase the dimensions are odd
     const height_offset = height_diff % 2;
-    const width_diff = MAX_WIDTH - size.width;
     const width_offset = width_diff % 2;
-    const north = height_diff >> 1 + height_offset;
-    const east = width_diff >> 1;
-    const south = height_diff >> 1;
-    const west = width_diff >> 1 + width_offset;
+    // divide the height and width by 2
+    const boundaryY = height_diff >> 1;
+    const boundaryX = width_diff >> 1;
+    // add the offset
+    const north = boundaryY + height_offset;
+    const west = boundaryX + width_offset;
+    // subtract total map height to align indices
+    const east = mapX - boundaryX;
+    const south = mapY - boundaryY;
     return {
         north,
         east,
@@ -22,11 +29,11 @@ export const calculateMapBoundary = (size: MapSize): MapBoundary => {
 
 export const pointWithinBoundary = (point: MapPoint, boundary: MapBoundary): boolean => {
     if (
-        point.y > boundary.north ||
-        point.x > boundary.east ||
+        point.y >= boundary.north ||
+        point.x >= boundary.east ||
         point.y < boundary.south ||
         point.x < boundary.west
     )
-        return false;
-    return true;
+        return true;
+    return false;
 }
