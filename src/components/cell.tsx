@@ -5,6 +5,8 @@ type CellProps = {
     y: number;
     island: boolean;
 };
+
+// Cell is a cell on the 2d grid of the map
 const Cell = (props: CellProps) => {
     const world = useMap();
     const { x, y, island = false } = props;

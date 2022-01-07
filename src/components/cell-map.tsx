@@ -1,6 +1,7 @@
 import { useMap } from "providers/map-provider";
 import CellRow from "./cell-row";
 
+// CellMap is a collection of CellRows that complete the 2d grid map
 const CellMap = () => {
     const world = useMap();
     const boundary = world.getMapBoundary();
