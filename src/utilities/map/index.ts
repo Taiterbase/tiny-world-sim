@@ -3,6 +3,7 @@ import { Map, MapBoundary, MapPoint, MapSize } from "models/map";
 export const MAX_HEIGHT = 100;
 export const MAX_WIDTH = 100;
 
+// calculateMapBoundary returns the map boundary for the current size.
 export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = MAX_WIDTH, size: MapSize): MapBoundary => {
     // calculate virtual boundaries
     const height_diff = mapY - size.height;
@@ -27,6 +28,8 @@ export const calculateMapBoundary = (mapY: number = MAX_HEIGHT, mapX: number = M
     };
 }
 
+// pointWithinBoundary returns a boolean specifying if the given cell location is
+// within the calculated map boundary
 export const pointWithinBoundary = (point: MapPoint, boundary: MapBoundary): boolean => {
     return point.y >= boundary.north &&
         point.y < boundary.south &&
@@ -34,6 +37,7 @@ export const pointWithinBoundary = (point: MapPoint, boundary: MapBoundary): boo
         point.x < boundary.east;
 }
 
+// generateMap creates the boolean[][] bitmap
 export const generateMap = () => {
     let arr: boolean[][] = [];
     for (let i = 0; i < MAX_HEIGHT; i++) {
@@ -45,6 +49,8 @@ export const generateMap = () => {
     return arr;
 }
 
+// generateBoundedMap creates the boolean[][] bitmap for the
+// bounded case; preserving the original map
 export const generateBoundedMap = (boundary: MapBoundary, map: Map): Map => {
     let boundedMap: boolean[][] = [];
     for (let i = boundary.north; i < boundary.south; i++) {
@@ -66,6 +72,7 @@ export const isValidSize = (size: MapSize) => {
     return true;
 }
 
+// getLands returns the number of landmarks on the map
 export const getLands = (boundary: MapBoundary, map: Map): number => {
     let numLand = 0;
     for (let i = boundary.north; i < boundary.south; i++) {
@@ -78,6 +85,7 @@ export const getLands = (boundary: MapBoundary, map: Map): number => {
     return numLand;
 }
 
+// getIslands returns the number of islands on the map
 export const getIslands = (boundary: MapBoundary, map: Map): number => {
     let numIslands = 0;
     let set = new Set();
