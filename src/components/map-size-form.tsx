@@ -1,7 +1,7 @@
 import { MapSize } from "models/map";
 import { useMap } from "providers/map-provider";
 import { FormEvent, useState } from "react";
-import { MAX_HEIGHT, MAX_WIDTH } from "utilities/map";
+import { MAX_HEIGHT, MAX_WIDTH } from "utilities";
 
 // MapSizeForm is the form for adjusting the map size
 const MapSizeForm = () => {
