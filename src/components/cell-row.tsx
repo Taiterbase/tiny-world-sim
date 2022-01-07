@@ -5,7 +5,6 @@ import Cell from "./cell";
 const CellRow = (row: number): React.ReactNode => {
     const world = useMap();
     const boundary = world.getMapBoundary();
-    console.log(boundary);
     let cellRow = [];
     for (let ii = boundary.west; ii < boundary.east; ii++) {
         let island = world.getCell({ x: ii, y: row });
