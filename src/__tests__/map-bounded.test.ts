@@ -9,7 +9,7 @@ test("{3, 4} is not within map boundaries", () => {
     const boundary = calculateMapBoundary(MAX_HEIGHT, MAX_WIDTH, mapSize);
     console.log(boundary);
     
-    const boundedMap = generateBoundedMap(boundary, map);
 
+    const boundedMap = generateBoundedMap(boundary, map);
     expect("").toMatch("");
 });
