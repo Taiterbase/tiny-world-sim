@@ -7,14 +7,60 @@ I use Yarn for package management and orchestration. You can get it [here](https
 ```
 1. git clone https://github.com/Taiterbase/bitso-take-home.git
 2. cd bitso-take-home
-3. yarn test
-4. yarn install
-5. yarn build
-6. yarn start
+3. yarn install
+4. yarn build
+5. yarn start
+6. yarn test
 ```
 
-### Blast-off!
-For this I used [Vercel](https://vercel.com/docs) to very quickly deploy my site.
+### File Structure
+```
+📦bitso-take-home
+ ┣ 📂src
+ ┃ ┣ 📂__tests__
+ ┃ ┃ ┣ 📜boundary.test.ts
+ ┃ ┃ ┣ 📜dfs.test.ts
+ ┃ ┃ ┣ 📜map-bounded.test.ts
+ ┃ ┃ ┣ 📜map.test.ts
+ ┃ ┃ ┗ 📜point.test.ts
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📜cell-map.tsx
+ ┃ ┃ ┣ 📜cell-row.tsx
+ ┃ ┃ ┣ 📜cell.tsx
+ ┃ ┃ ┣ 📜header.tsx
+ ┃ ┃ ┣ 📜map-size-form.tsx
+ ┃ ┃ ┣ 📜map-stats.tsx
+ ┃ ┃ ┗ 📜stat-card.tsx
+ ┃ ┣ 📂layouts
+ ┃ ┃ ┣ 📂home
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┗ 📂root
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂models
+ ┃ ┃ ┗ 📂map
+ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📜_app.tsx
+ ┃ ┃ ┣ 📜_document.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂providers
+ ┃ ┃ ┗ 📜map-provider.tsx
+ ┃ ┣ 📂styles
+ ┃ ┃ ┗ 📜globals.css
+ ┃ ┗ 📂utilities
+ ┃ ┃ ┗ 📜index.ts
+ ┣ 📜.eslintrc.json
+ ┣ 📜.gitignore
+ ┣ 📜README.md
+ ┣ 📜jest.config.js
+ ┣ 📜jest.setup.js
+ ┣ 📜next-env.d.ts
+ ┣ 📜next.config.js
+ ┣ 📜package.json
+ ┣ 📜postcss.config.js
+ ┣ 📜tailwind.config.js
+ ┗ 📜tsconfig.json
+```
 
 ### Relevant links
 * [Sebastian Lague's Tiny World](https://youtu.be/sLqXFF8mlEU)
