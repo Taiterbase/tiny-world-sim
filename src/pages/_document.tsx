@@ -10,8 +10,8 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-            <meta property="og:title" content="Zifi Web" key="title" />
-            <meta property="description" content="Next.js Web Template free to use for learners and scholars" key="description" />
+            <meta property="og:title" content="Tiny World" key="title" />
+            <meta property="description" content="Bitso take home project" key="description" />
         </Head>
         <body>
           <Main />

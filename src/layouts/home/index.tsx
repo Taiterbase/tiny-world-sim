@@ -7,8 +7,8 @@ export function HomeLayout(props: { children: ReactNode; }) {
     const { children } = props;
     return (
         <MapProvider>
-            <div className="min-h-full min-w-full bg-blue-150">
-                <main className="overflow-y-scroll p-2 min-h-screen min-w-full flex justify-center flex-grow">
+            <div className="flex flex-grow min-w-screen min-h-screen bg-blue-150">
+                <main className="flex flex-col justify-start flex-grow">
                     {children}
                 </main>
             </div>
