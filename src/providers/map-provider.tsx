@@ -8,8 +8,8 @@ export const MapContext = createContext<MapProviderValues>(null);
 // MapProvider offers an interface for the grid of cells on the map
 export function MapProvider(props: { children: ReactNode }) {
     const { children } = props;
-    const [mapSize, setMapSize] = useState<MapSize>({ height: 20, width: 20 });
-    const [mapBoundary, setMapBoundary] = useState<MapBoundary>({ north: 40, south: 40, east: 40, west: 40 });
+    const [mapSize, setMapSize] = useState<MapSize>({ height: 10, width: 20 });
+    const [mapBoundary, setMapBoundary] = useState<MapBoundary>(undefined);
     const [map, setMap] = useState<Map>(() => {
         let arr: boolean[][] = [];
         for (let i = 0; i < MAX_HEIGHT; i++) {
@@ -20,13 +20,13 @@ export function MapProvider(props: { children: ReactNode }) {
         }
         return arr;
     });
-    const [islands, setIslands] = useState<number>(0);
 
     // useEffect[] initializes values and sets up listeners
     useEffect(() => {
         // Initialize the map with max values.
-        (async () => await setMapGridSize({ height: 20, width: 20 }));
+        (async () => await setMapGridSize({ height: 100, width: 100 }));
         (async () => setMap(await initializeMap()));
+        setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
     }, []);
 
     // useEffect[mapSize] resets map boundaries after a mapSize change
@@ -79,17 +79,17 @@ export function MapProvider(props: { children: ReactNode }) {
         return new Promise((resolve, reject) => {
             if (isValidSize(size)) {
                 setMapSize(size);
-                refreshCells();
                 resolve();
             }
             else {
-                reject("Dimensions are out of bounds. Please submit a map size within a 1000 x 1000 rectangle.");
+                reject(`Dimensions are out of bounds. Please submit a map size within a ${MAX_WIDTH} x ${MAX_HEIGHT} rectangle.`);
             }
         })
     }
 
     // getMapBoundary returns the padded map boundary
     const getMapBoundary = (): MapBoundary => {
+        if (!mapBoundary) return calculateMapBoundary(map.length, map[0].length, mapSize);
         return mapBoundary;
     }
 
@@ -113,6 +113,47 @@ export function MapProvider(props: { children: ReactNode }) {
         });
     }
 
+    const getNumberOfLands = (): number => {
+        const boundary = getMapBoundary();
+        let numLand = 0;
+        for (let i = boundary.north; i < boundary.south; i++) {
+            for (let ii = boundary.west; ii < boundary.east; ii++) {
+                if (map[i][ii] === true) {
+                    numLand++;
+                }   
+            }
+        }
+        return numLand;
+    }
+
+    const getNumberOfIslands = (): number => {
+        const boundary = getMapBoundary();
+        let numIslands = 0;
+        let set = new Set();
+        const dfs = (point: MapPoint) => {
+            if (!pointWithinBoundary(point, boundary)) return;
+            if (!set.has(JSON.stringify(point)) &&
+                map[point.y][point.x] === true) {
+                set.add(JSON.stringify(point));
+                dfs({ x: point.x + 1, y: point.y })
+                dfs({ x: point.x - 1, y: point.y })
+                dfs({ x: point.x, y: point.y + 1 })
+                dfs({ x: point.x, y: point.y - 1 })
+            }
+        }
+
+        for (let i = boundary.north; i < boundary.south; i++) {
+            for (let ii = boundary.west; ii < boundary.east; ii++) {
+                let point: MapPoint = { x: ii, y: i };
+                if (map[i][ii] === true && !set.has(JSON.stringify(point))) {
+                    numIslands++;
+                    dfs(point);
+                }
+            }
+        }
+        return numIslands;
+    }
+
     // isValidSize verifies if the parameter is within bounds
     const isValidSize = (size: MapSize) => {
         if (size.height > MAX_HEIGHT) return false;
@@ -122,22 +163,6 @@ export function MapProvider(props: { children: ReactNode }) {
         return true;
     }
 
-    // refreshCells gives us the functionality to keep visible islands on
-    // the grid, and remove islands from the grid that are no longer visible
-    const refreshCells = (): void => {
-        for (let i = 0; i < map.length; ++i) {
-            for (let ii = 0; i < map[0].length; ++ii) {
-                let point: MapPoint = { x: ii, y: i };
-                // If the island is not within the boundaries, get rid of it
-                if (map[i][ii] === true && !pointWithinBoundary(point, mapBoundary)) {
-                    // Remove island outside of new grid dimensions
-                    console.log(`Removing point ${{ x: ii, y: i }}`);
-                    map[i][ii] = false;
-                } // leave the rest alone; they are in scope
-            }
-        }
-    }
-
     // list of values associated with the provider. like an interface..
     const values: MapProviderValues = {
         getMap,
@@ -145,8 +170,10 @@ export function MapProvider(props: { children: ReactNode }) {
         getMapGridSize,
         setMapGridSize,
         getMapBoundary,
-        setCell,
         getCell,
+        setCell,
+        getNumberOfIslands,
+        getNumberOfLands,
     };
 
     return (
