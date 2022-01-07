@@ -1,6 +1,6 @@
 import { Map, MapBoundary, MapPoint, MapProviderValues, MapSize } from "models/map";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { calculateMapBoundary, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities/map";
+import { calculateMapBoundary, generateBoundedMap, generateMap, getIslands, getLands, isValidSize, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities/map";
 
 
 export const MapContext = createContext<MapProviderValues>(null);
@@ -8,7 +8,7 @@ export const MapContext = createContext<MapProviderValues>(null);
 // MapProvider offers an interface for the grid of cells on the map
 export function MapProvider(props: { children: ReactNode }) {
     const { children } = props;
-    const [mapSize, setMapSize] = useState<MapSize>({ height: 10, width: 20 });
+    const [mapSize, setMapSize] = useState<MapSize>({ height: 20, width: 40 });
     const [mapBoundary, setMapBoundary] = useState<MapBoundary>(undefined);
     const [map, setMap] = useState<Map>(() => {
         let arr: boolean[][] = [];
@@ -37,13 +37,7 @@ export function MapProvider(props: { children: ReactNode }) {
     // initializeMap initializes the map!
     const initializeMap = (): Promise<Map> => {
         return new Promise((resolve, _reject) => {
-            let arr: boolean[][] = [];
-            for (let i = 0; i < MAX_HEIGHT; i++) {
-                arr[i] = [];
-                for (let ii = 0; ii < MAX_WIDTH; ii++) {
-                    arr[i][ii] = false;
-                }
-            }
+            let arr = generateMap();
             return resolve(arr);
         });
     }
@@ -55,14 +49,8 @@ export function MapProvider(props: { children: ReactNode }) {
 
     // getBoundedMap returns the bounded map area
     const getBoundedMap = (): Map => {
-        let boundedMap: boolean[][] = [];
-        for (let i = mapBoundary.north; i < mapBoundary.south; i++) {
-            boundedMap[i] = [];
-            for (let ii = mapBoundary.west; ii < mapBoundary.east; ii++) {
-                boundedMap[i][ii] = map[i][ii];
-            }
-        }
-        return boundedMap;
+        const boundary = getMapBoundary();
+        return generateBoundedMap(boundary, map);
     }
 
     // getMapSize gets the current map size
@@ -77,13 +65,8 @@ export function MapProvider(props: { children: ReactNode }) {
     // altering the root 2d array
     const setMapGridSize = async (size: MapSize): Promise<void> => {
         return new Promise((resolve, reject) => {
-            if (isValidSize(size)) {
-                setMapSize(size);
-                resolve();
-            }
-            else {
-                reject(`Dimensions are out of bounds. Please submit a map size within a ${MAX_WIDTH} x ${MAX_HEIGHT} rectangle.`);
-            }
+            if (isValidSize(size)) return resolve(setMapSize(size));
+            return reject(`Dimensions are out of bounds. Please submit a map size between a 2 x 2 and ${MAX_WIDTH} x ${MAX_HEIGHT} rectangle.`);
         })
     }
 
@@ -115,52 +98,12 @@ export function MapProvider(props: { children: ReactNode }) {
 
     const getNumberOfLands = (): number => {
         const boundary = getMapBoundary();
-        let numLand = 0;
-        for (let i = boundary.north; i < boundary.south; i++) {
-            for (let ii = boundary.west; ii < boundary.east; ii++) {
-                if (map[i][ii] === true) {
-                    numLand++;
-                }   
-            }
-        }
-        return numLand;
+        return getLands(boundary, map);
     }
 
     const getNumberOfIslands = (): number => {
         const boundary = getMapBoundary();
-        let numIslands = 0;
-        let set = new Set();
-        const dfs = (point: MapPoint) => {
-            if (!pointWithinBoundary(point, boundary)) return;
-            if (!set.has(JSON.stringify(point)) &&
-                map[point.y][point.x] === true) {
-                set.add(JSON.stringify(point));
-                dfs({ x: point.x + 1, y: point.y })
-                dfs({ x: point.x - 1, y: point.y })
-                dfs({ x: point.x, y: point.y + 1 })
-                dfs({ x: point.x, y: point.y - 1 })
-            }
-        }
-
-        for (let i = boundary.north; i < boundary.south; i++) {
-            for (let ii = boundary.west; ii < boundary.east; ii++) {
-                let point: MapPoint = { x: ii, y: i };
-                if (map[i][ii] === true && !set.has(JSON.stringify(point))) {
-                    numIslands++;
-                    dfs(point);
-                }
-            }
-        }
-        return numIslands;
-    }
-
-    // isValidSize verifies if the parameter is within bounds
-    const isValidSize = (size: MapSize) => {
-        if (size.height > MAX_HEIGHT) return false;
-        if (size.width > MAX_WIDTH) return false;
-        if (size.width < 0 || size.height < 0) return false;
-        if (size.width === 0 && size.height === 0) return false;
-        return true;
+        return getIslands(boundary, map);
     }
 
     // list of values associated with the provider. like an interface..
