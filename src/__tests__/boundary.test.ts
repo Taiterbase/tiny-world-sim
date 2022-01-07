@@ -2,7 +2,7 @@ import { expect, test } from "@jest/globals";
 import { MapSize } from "models/map";
 import { calculateMapBoundary, MAX_HEIGHT, MAX_WIDTH } from "../utilities";
 
-test("boundaries are whole numbers", () => {
+test("1 boundaries are whole numbers", () => {
     let mapSize: MapSize = { height: 9, width: 51 };
     let boundary = calculateMapBoundary(MAX_HEIGHT, MAX_WIDTH, mapSize);
 
@@ -12,7 +12,7 @@ test("boundaries are whole numbers", () => {
     expect(`0`).toMatch(`${boundary.west % 1}`);
 });
 
-test("boundaries are whole numbers", () => {
+test("2 boundaries are whole numbers", () => {
     let mapSize: MapSize = { height: 7, width: 53 };
     let boundary = calculateMapBoundary(MAX_HEIGHT, MAX_WIDTH, mapSize);
 
