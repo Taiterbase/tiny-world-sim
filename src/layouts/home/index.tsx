@@ -1,4 +1,3 @@
-import { SWRConfig } from "swr";
 import { getLayout as getRootLayout } from "layouts/root";
 import React, { ReactNode } from "react";
 import { MapProvider } from "providers/map-provider";

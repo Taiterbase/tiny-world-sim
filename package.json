@@ -15,9 +15,7 @@
     "jest": "^27.4.7",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "sharp": "latest",
-    "swr": "latest"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

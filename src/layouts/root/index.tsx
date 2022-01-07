@@ -1,6 +1,5 @@
 import Head from "next/head";
 import React, { ReactNode } from "react";
-import { SWRConfig } from "swr";
 
 export function RootLayout(props: { children: ReactNode; }) {
     const { children } = props;
