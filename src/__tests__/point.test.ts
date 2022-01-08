@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { MapPoint, MapSize } from "models/map";
+import { MapPoint, MapSize } from "models";
 import { calculateMapBoundary, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "../utilities";
 
 let mapSize: MapSize = { height: 9, width: 51 };

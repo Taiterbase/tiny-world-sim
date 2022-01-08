@@ -1,4 +1,4 @@
-import { MapSize } from "models/map";
+import { MapSize } from "models";
 import { useMap } from "providers/map-provider";
 import { FormEvent, useState } from "react";
 import { MAX_HEIGHT, MAX_WIDTH } from "utilities";

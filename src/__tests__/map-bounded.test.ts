@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { MapSize } from "models/map";
+import { MapSize } from "models";
 import { calculateMapBoundary, clearMap, generateBoundedMap, generateMap, getIslands, getLands, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "../utilities";
 
 const map = generateMap();

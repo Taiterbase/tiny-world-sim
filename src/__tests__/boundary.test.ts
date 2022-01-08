@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { MapSize } from "models/map";
+import { MapSize } from "models";
 import { calculateMapBoundary, MAX_HEIGHT, MAX_WIDTH } from "../utilities";
 
 test("1 boundaries are whole numbers", () => {

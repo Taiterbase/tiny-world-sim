@@ -1,4 +1,4 @@
-import { Map, MapBoundary, MapPoint, MapSize } from "models/map";
+import { Map, MapBoundary, MapPoint, MapSize } from "models";
 
 export const MAX_HEIGHT = 100;
 export const MAX_WIDTH = 100;

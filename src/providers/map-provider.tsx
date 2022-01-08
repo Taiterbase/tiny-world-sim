@@ -1,4 +1,4 @@
-import { Map, MapBoundary, MapPoint, MapProviderValues, MapSize } from "models/map";
+import { Map, MapBoundary, MapPoint, MapProviderValues, MapSize } from "models";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { calculateMapBoundary, generateBoundedMap, generateMap, getIslands, getLands, isValidSize, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities";
 
