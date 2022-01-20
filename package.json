@@ -12,6 +12,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
+    "axios": "^0.25.0",
     "jest": "^27.4.7",
     "next": "latest",
     "react": "latest",
