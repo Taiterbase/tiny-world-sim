@@ -1,6 +1,6 @@
 import { MapSize } from "models";
 import { useMap } from "providers/map-provider";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { MAX_HEIGHT, MAX_WIDTH } from "utilities";
 
 // MapSizeForm is the form for adjusting the map size
@@ -18,6 +18,10 @@ const MapSizeForm = () => {
             setError(err);
         })
     }
+
+    useEffect(() => {
+        setMapSize(world.mapSize);
+    }, [world])
 
     return (
         <form onSubmit={e => changeMapSize(e)} className="flex flex-col flex-grow">
