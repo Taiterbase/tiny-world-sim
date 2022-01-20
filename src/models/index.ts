@@ -27,4 +27,8 @@ export type MapProviderValues = {
     getCell: (point: MapPoint) => boolean;
     getNumberOfIslands: () => number;
     getNumberOfLands: () => number;
+    map: Map;
+    mapBoundary: MapBoundary;
+    mapSize: MapSize;
+    loading: boolean;
 };

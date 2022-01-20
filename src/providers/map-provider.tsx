@@ -1,16 +1,16 @@
 import { Map, MapBoundary, MapPoint, MapProviderValues, MapSize } from "models";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { calculateMapBoundary, generateBoundedMap, generateMap, getIslands, getLands, isValidSize, MAX_HEIGHT, MAX_WIDTH, pointWithinBoundary } from "utilities";
-
+import axios from "axios";
 
 export const MapContext = createContext<MapProviderValues>(null);
 
 // MapProvider offers an interface for the grid of cells on the map
 export function MapProvider(props: { children: ReactNode }) {
     const { children } = props;
-    const [mapSize, setMapSize] = useState<MapSize>({ height: 20, width: 40 });
-    const [mapBoundary, setMapBoundary] = useState<MapBoundary>(undefined);
-    const [map, setMap] = useState<Map>(() => {
+    const [mapSize, setMapSize] = useState<MapSize>({ height: MAX_HEIGHT, width: MAX_WIDTH });
+    const [mapBoundary, setMapBoundary] = useState<MapBoundary>({ north: 0, east: 0, south: 0, west: 0 });
+    const [map, setMap] = useState<Map>((() => {
         let arr: boolean[][] = [];
         for (let i = 0; i < MAX_HEIGHT; i++) {
             arr[i] = [];
@@ -19,19 +19,42 @@ export function MapProvider(props: { children: ReactNode }) {
             }
         }
         return arr;
-    });
+    })());
+    const [loading, setLoading] = useState(true);
 
-    // useEffect[] initializes values and sets up listeners
+    // useEffect[] fetches data and initializes values
     useEffect(() => {
-        // Initialize the map with max values.
-        (async () => await setMapGridSize({ height: 100, width: 100 }));
-        (async () => setMap(await initializeMap()));
-        setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
+        (async () => await axios.get("https://www.reddit.com/r/bitcoin.json")
+            .then(data => data.data).then(async (data) => {
+                data = data.data;
+                return data.children;
+            }).then(async (data) => {
+                const height = data.length;
+                const width = data[0].data.id.length;
+                const boundary = calculateMapBoundary(map.length, map[0].length, { height: data.length, width: data[0].data.id.length });
+                let vowelsAndNumbers = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'e', 'i', 'o', 'u']);
+                let newMap = [...map];
+                for (let i = boundary.north; i < boundary.south; i++) {
+                    newMap[i] = [];
+                    let id = data[i - boundary.north].data.id.split("");
+                    for (let ii = boundary.west; ii < boundary.east; ii++) {
+                        let island = !vowelsAndNumbers.has(id[ii - boundary.west]);
+                        console.log(island);
+                        newMap[i][ii] = island;
+                    }
+                }
+                setMap(newMap);
+                setMapBoundary(boundary);
+                setMapGridSize({ height, width });
+            })
+            .catch(err => { console.error(err) })
+        )().then(() => setLoading(false));
     }, []);
 
     // useEffect[mapSize] resets map boundaries after a mapSize change
     useEffect(() => {
-        setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
+        if (map)
+            setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
     }, [mapSize]);
 
     // initializeMap initializes the map!
@@ -55,10 +78,7 @@ export function MapProvider(props: { children: ReactNode }) {
 
     // getMapSize gets the current map size
     const getMapGridSize = (): MapSize => {
-        return {
-            height: mapSize.height,
-            width: mapSize.width
-        };
+        return mapSize;
     }
 
     // setMapSize sets the map size within the current limits, without
@@ -72,12 +92,14 @@ export function MapProvider(props: { children: ReactNode }) {
 
     // getMapBoundary returns the padded map boundary
     const getMapBoundary = (): MapBoundary => {
+        if (!map) return;
         if (!mapBoundary) return calculateMapBoundary(map.length, map[0].length, mapSize);
         return mapBoundary;
     }
 
     // getCell returns the value at `Point`.
     const getCell = (point: MapPoint): boolean => {
+        if (!map) return false;
         return map[point.y][point.x];
     }
 
@@ -117,6 +139,10 @@ export function MapProvider(props: { children: ReactNode }) {
         setCell,
         getNumberOfIslands,
         getNumberOfLands,
+        map,
+        mapBoundary,
+        mapSize,
+        loading,
     };
 
     return (
