@@ -57,14 +57,6 @@ export function MapProvider(props: { children: ReactNode }) {
             setMapBoundary(calculateMapBoundary(map.length, map[0].length, mapSize));
     }, [mapSize]);
 
-    // initializeMap initializes the map!
-    const initializeMap = (): Promise<Map> => {
-        return new Promise((resolve, _reject) => {
-            let arr = generateMap();
-            return resolve(arr);
-        });
-    }
-
     // getMap returns the raw boolean[][]
     const getMap = (): Map => {
         return map;
