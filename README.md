@@ -24,7 +24,7 @@ Here are two refactors I think this project could benefit from greatly:
 * Use an SVG canvas and perform some simple 2D math to draw lines for the grid, and rectangles for islands. This is an option, but not one I would choose.
   
 And here are two simpler ones that still offer a good performance bump:
-* memoize the Cell components to cache recent changes and speed up bitmap toggles. This is the lowest hanging fruit.
+* Memoize the Cell components to cache recent changes and speed up bitmap toggles. This is the lowest hanging fruit.
 * Use Redux instead of Context to manage state, offering the ability to have pure functional components and increase performance where comparing props between state changes. This is likely the most viable option.
 
   
