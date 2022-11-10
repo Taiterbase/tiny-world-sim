@@ -1,4 +1,4 @@
-# Bitso
+# Tiny Islands
 This is a Tiny World simulation where each cell in the 2d grid represents a location on our world map. This is similar to how battleship's playing field is laid out, in that the user can select a point on the grid and deem it to be an island or apart of the ocean.
 
 ### Cool. Where's the ignition?
