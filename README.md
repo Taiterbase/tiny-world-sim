@@ -27,7 +27,7 @@ Here are two refactors I think this project could benefit from:
   
 ### File Structure
 ```
-📦bitso-take-home
+📦tiny-world-sim
  ┣ 📂src
  ┃ ┣ 📂__tests__
  ┃ ┃ ┣ 📜boundary.test.ts
