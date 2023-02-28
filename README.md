@@ -5,8 +5,8 @@ This is a Tiny World simulation where each cell in the 2d grid represents a loca
 I use Yarn for package management and orchestration. You can get it [here](https://yarnpkg.com/getting-started/install).
 
 ```
-1. git clone https://github.com/Taiterbase/bitso-take-home.git
-2. cd bitso-take-home
+1. git clone https://github.com/Taiterbase/tiny-world-sim.git
+2. cd tiny-world-sim
 3. yarn install
 4. yarn build
 5. yarn start
